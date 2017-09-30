@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
--- https://www.phpmyadmin.net/
+-- version 4.4.15.7
+-- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 30 2017 г., 07:02
--- Версия сервера: 5.6.37
--- Версия PHP: 5.5.38
+-- Время создания: Сен 30 2017 г., 09:55
+-- Версия сервера: 5.7.13
+-- Версия PHP: 5.5.37
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -28,16 +26,16 @@ SET time_zone = "+00:00";
 -- Структура таблицы `categories`
 --
 
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `visible` int(11) NOT NULL,
-  `created` date NOT NULL,
-  `updated` date NOT NULL,
-  `description` text NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `parent_id` bigint(20) NOT NULL,
-  `url` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL DEFAULT '""',
+  `visible` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` text,
+  `image` varchar(255) NOT NULL DEFAULT '""',
+  `parent_id` bigint(20) NOT NULL DEFAULT '0',
+  `url` varchar(255) NOT NULL DEFAULT '""'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -46,17 +44,17 @@ CREATE TABLE `categories` (
 -- Структура таблицы `orders`
 --
 
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `id` bigint(20) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
-  `user_name` varchar(255) NOT NULL,
-  `user_phone` varchar(255) NOT NULL,
-  `user_email` varchar(255) NOT NULL,
-  `user_adress` varchar(255) NOT NULL,
-  `user_comment` text NOT NULL,
-  `date_create` date NOT NULL,
-  `total_price` float NOT NULL,
-  `status` int(11) NOT NULL
+  `user_id` bigint(20) NOT NULL DEFAULT '0',
+  `user_name` varchar(255) NOT NULL DEFAULT '""',
+  `user_phone` varchar(255) NOT NULL DEFAULT '""',
+  `user_email` varchar(255) NOT NULL DEFAULT '""',
+  `user_adress` varchar(255) NOT NULL DEFAULT '""',
+  `user_comment` text,
+  `date_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `total_price` float NOT NULL DEFAULT '14.2',
+  `status` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -65,14 +63,14 @@ CREATE TABLE `orders` (
 -- Структура таблицы `pages`
 --
 
-CREATE TABLE `pages` (
+CREATE TABLE IF NOT EXISTS `pages` (
   `id` bigint(20) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `visible` int(11) NOT NULL,
-  `created` date NOT NULL,
-  `updated` date NOT NULL
+  `title` varchar(255) NOT NULL DEFAULT '""',
+  `description` text,
+  `url` varchar(255) NOT NULL DEFAULT '""',
+  `visible` int(11) NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -81,15 +79,15 @@ CREATE TABLE `pages` (
 -- Структура таблицы `products`
 --
 
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  `image` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `created` date NOT NULL,
-  `updated` date NOT NULL,
-  `visible` int(11) NOT NULL
+  `name` varchar(255) NOT NULL DEFAULT '""',
+  `description` text,
+  `image` varchar(255) NOT NULL DEFAULT '""',
+  `url` varchar(255) NOT NULL DEFAULT '""',
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `visible` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -98,10 +96,10 @@ CREATE TABLE `products` (
 -- Структура таблицы `product_categories`
 --
 
-CREATE TABLE `product_categories` (
-  `product_id` bigint(20) NOT NULL,
-  `category_id` bigint(20) NOT NULL,
-  `position` int(11) NOT NULL
+CREATE TABLE IF NOT EXISTS `product_categories` (
+  `product_id` bigint(20) NOT NULL DEFAULT '0',
+  `category_id` bigint(20) NOT NULL DEFAULT '0',
+  `position` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -110,15 +108,15 @@ CREATE TABLE `product_categories` (
 -- Структура таблицы `purchases`
 --
 
-CREATE TABLE `purchases` (
+CREATE TABLE IF NOT EXISTS `purchases` (
   `id` bigint(20) NOT NULL,
-  `order_id` bigint(20) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `price(sale)` float NOT NULL,
-  `amount` int(11) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `variant_id` bigint(20) NOT NULL,
-  `variant_name` varchar(255) NOT NULL
+  `order_id` bigint(20) NOT NULL DEFAULT '0',
+  `product_id` bigint(20) NOT NULL DEFAULT '0',
+  `price(sale)` float NOT NULL DEFAULT '14.2',
+  `amount` int(11) NOT NULL DEFAULT '0',
+  `product_name` varchar(255) NOT NULL DEFAULT '""',
+  `variant_id` bigint(20) NOT NULL DEFAULT '0',
+  `variant_name` varchar(255) NOT NULL DEFAULT '""'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -127,14 +125,14 @@ CREATE TABLE `purchases` (
 -- Структура таблицы `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `phone` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `adress` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `status` int(11) NOT NULL
+  `name` varchar(255) NOT NULL DEFAULT '""',
+  `phone` varchar(255) NOT NULL DEFAULT '""',
+  `email` varchar(255) NOT NULL DEFAULT '""',
+  `adress` varchar(255) NOT NULL DEFAULT '""',
+  `password` varchar(255) NOT NULL DEFAULT '""',
+  `status` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -143,15 +141,15 @@ CREATE TABLE `users` (
 -- Структура таблицы `variants`
 --
 
-CREATE TABLE `variants` (
+CREATE TABLE IF NOT EXISTS `variants` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `product_id` bigint(20) NOT NULL,
-  `price` float NOT NULL,
-  `sku` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `sale_price` float NOT NULL,
-  `position` int(11) NOT NULL
+  `name` varchar(255) NOT NULL DEFAULT '""',
+  `product_id` bigint(20) NOT NULL DEFAULT '0',
+  `price` float NOT NULL DEFAULT '14.2',
+  `sku` int(11) NOT NULL DEFAULT '0',
+  `amount` int(11) NOT NULL DEFAULT '0',
+  `sale_price` float NOT NULL DEFAULT '14.2',
+  `position` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
@@ -238,8 +236,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `variants`
 --
 ALTER TABLE `variants`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;COMMIT;
-
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
